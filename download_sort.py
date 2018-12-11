@@ -7,3 +7,19 @@ def download_sort(originPath, destPath):
         paths.extend(path.glob('**/*.'+x))
     ## filter shows
     #movies = showFilter(paths, destPath) 
+
+    #for i in paths:
+    #    fileName = filename.append(str(i).split('\\')[-1])
+    #info = list(re.search('^(.*)\.s([0-9]+)e[0-9]+', fileName).groups())
+    #season = "Season "+info[1]
+    #showName = ' '.join(info[0].split('.')).title()
+    #showPath = destDir+'/'+showName+'/'+season
+    #try:
+    #    os.makedirs(showPath)
+    #except FileExistsError:
+    #    print(showName)
+    #shutil.move(str(paths[0]),showPath)
+    ## DELETE'A source möppu
+    #print(showPath) 
+    #print(season)
+    #print(len(paths))
