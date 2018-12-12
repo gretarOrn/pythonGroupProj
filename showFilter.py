@@ -1,5 +1,6 @@
 import pathlib
 import re
+import SeasonFilter
 def show_filter(paths, destPath):
     
     seasonReg = re.compile("[Ss](eason)[s]*\s*.*[0-9]{0,3}|(SEASON)[S]*\s*.*[0-9]{0,3}|(season)[s]*\s*.*[0-9]{0,3}|[Ss](er)[íi](a)\s*.*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\")
@@ -9,14 +10,16 @@ def show_filter(paths, destPath):
     # reg fyrir staka þætti season
     Seasons = set(filter(seasonReg.search,paths))
     paths = paths - Seasons
+    SeasonFilter.search_by_season(Seasons, destPath)
     Episodes = set(filter(singleShowReg.search,paths))
     paths = paths - Episodes
     movies = set(filter(movieReg.search,paths))
     paths = paths - movies
     paths = list(paths)
     paths.sort()
-    print('\n'.join(paths))
-    print(len(paths))
+    #print('\n'.join(Seasons))
+    #print('\n'.join(paths))
+    #print(len(paths))
     #for i in paths:
     #    if i.split('/')[-2] == season:
     #print("bla")
