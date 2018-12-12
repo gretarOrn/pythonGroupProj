@@ -1,12 +1,14 @@
 import pathlib
+import showFilter
 def download_sort(originPath, destPath):
     path = pathlib.Path(originPath)
     filetypes = ['mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg' ]
     paths = list()
     for x in filetypes:
         paths.extend(path.glob('**/*.'+x))
-    ## filter shows
-    #movies = showFilter(paths, destPath) 
+    ## sort shows and return
+    paths = set(map(lambda x: str(x), paths))
+    movies = showFilter.show_filter(paths, destPath) 
 
     #for i in paths:
     #    fileName = filename.append(str(i).split('\\')[-1])
@@ -23,3 +25,4 @@ def download_sort(originPath, destPath):
     #print(showPath) 
     #print(season)
     #print(len(paths))
+download_sort('downloads', "downloads")
