@@ -4,13 +4,12 @@ import os
 import shutil
 def search_by_season(seasonLis, destPath):
     serieData = []
-    seasonLisSet = set(seasonLis)
     showPath = set()
-    tmp = set()
     seasonReg = re.compile("[Ss]eason[s]*\s*.[0-9]{0,3}|SEASON[S]*\s*.[0-9]{0,3}|season[s]*\s*.[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\")
     for x in seasonLis:
         serieData.append(x.split('\\')[1:])
     counter = 0
+    counter2 = 0
     for x in serieData:
         #þegar bara subfolder inniheldur orðið season
         if len(x) > 1 and re.search(seasonReg, x[1]) is not None and re.search(seasonReg, x[0]) is None:
@@ -21,7 +20,7 @@ def search_by_season(seasonLis, destPath):
             showName = x[0].lower()
             #taka út symbols í seríunafni og koma á format sem passar við existing möppur
             showName = re.sub(' - |\(|\)|\'', '', showName)
-            showName = re.sub('\.', ' ', showName)
+            showName = re.sub('\.|\,', ' ', showName)
             if season[-1].isdigit() and not season[-2].isdigit(): seasonF += 'Season 0' + season[-1]
             elif season[-1].isdigit() and season[-2].isdigit(): seasonF += 'Season ' + season[-2] + season[-1]
             showPath.add(('/'.join(x) ,destPath+'/'+showName.title()+'/'+seasonF))
@@ -48,7 +47,7 @@ def search_by_season(seasonLis, destPath):
             showName = x[0].replace(re.search(seasonReg, x[0]).group(), '')
             #taka út symbols í seríunafni og season og koma á format sem passar við existing möppur
             showName = re.sub(' - |\(|\)|\'', '', showName).lower()
-            showName = re.sub('\.', ' ', showName)
+            showName = re.sub('\.|\,', ' ', showName)
             showName = showName.strip()
             if season[-1].isdigit() and not season[-2].isdigit(): season = 'Season 0' + season[-1]
             elif season[-1].isdigit() and season[-2].isdigit(): season = 'Season ' + season[-2] + season[-1]
@@ -61,21 +60,22 @@ def search_by_season(seasonLis, destPath):
             counter +=1
             season = re.search(seasonReg, x[0]).group()
             showName = ''
+            reg2 = re.compile('[Ss]eason[s]*\s*.*[0-9]{0,3}|SEASON[S]*\s*.*[0-9]{0,3}|season[s]*\s*.*[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\')
             if re.match(seasonReg, x[0]) is not None:
                 continue
-            else: showName = x[0].replace(season, '')
+            else: showName = re.sub(reg2, '', x[0])
             #edge case fyrir tala + sería(ísl)
             if re.match('([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}', season): season = 'Season 0'+season[0]
             #taka út symbols í seríunafni og season og koma á format sem passar við existing möppur
             season = re.sub('\.', ' ', season)
             showName = re.sub(' - |\(|\)|\'', '', showName).lower()
-            showName = re.sub('\.', ' ', showName)
+            showName = re.sub('\.|\,', ' ', showName)
             showName = showName.strip()
             #koma season á format: 'Season 01' eða 'Season 12'
             if season[-1].isdigit() and not season[-2].isdigit(): season = 'Season 0' + season[-1]
             elif season[-1].isdigit() and season[-2].isdigit(): season = 'Season ' + season[-2] + season[-1]
             showPath.add(('/'.join(x), destPath+'/'+showName.title()+'/'+season))
-            #print(showName.title()+'/'+season)
+            #print(showName.title())
             #serieData.remove(x)
             continue
     #búa til dest dir og færa úr upphaflega dir í dest dir
@@ -86,13 +86,16 @@ def search_by_season(seasonLis, destPath):
             pass
         try:
             shutil.move('downloads/'+x[0],x[1])
+            counter2+=1
         except:
             pass
     #print(counter)
     #for x in serieData:
     #    print(x, '\n')
-    print(len(showPath))
-    print(len(serieData))
+    #print(counter2)
+    #print(len(showPath))
+    #print(len(serieData))
+
 
 
 
