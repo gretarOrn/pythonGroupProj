@@ -4,6 +4,7 @@ import os
 import shutil
 def search_by_season(seasonLis, destPath):
     serieData = []
+    seasonLisSet = set(seasonLis)
     showPath = set()
     tmp = set()
     seasonReg = re.compile("[Ss]eason[s]*\s*.[0-9]{0,3}|SEASON[S]*\s*.[0-9]{0,3}|season[s]*\s*.[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\")
@@ -24,7 +25,7 @@ def search_by_season(seasonLis, destPath):
             if season[-1].isdigit() and not season[-2].isdigit(): seasonF += 'Season 0' + season[-1]
             elif season[-1].isdigit() and season[-2].isdigit(): seasonF += 'Season ' + season[-2] + season[-1]
             showPath.add(('/'.join(x) ,destPath+'/'+showName.title()+'/'+seasonF))
-            serieData.remove(x)
+            #serieData.remove(x)
             #print(season)
             continue
         #edge case fyrir þátt þar sem parent mappan innihélt 'season + roman numeral ekki digit'
@@ -37,7 +38,7 @@ def search_by_season(seasonLis, destPath):
             if season[-1].isdigit() and not season[-2].isdigit(): season = 'Season 0' + season[-1]
             elif season[-1].isdigit() and season[-2].isdigit(): season = 'Season ' + season[-2] + season[-1]
             showPath.add(('/'.join(x), destPath+'/'+showName.title()+'/'+season))
-            serieData.remove(x)
+            #serieData.remove(x)
             #print(season)
             continue
         #þegar bæði parent folder og subfolder innihalda orðið season
@@ -53,7 +54,7 @@ def search_by_season(seasonLis, destPath):
             elif season[-1].isdigit() and season[-2].isdigit(): season = 'Season ' + season[-2] + season[-1]
             showPath.add(('/'.join(x), destPath+'/'+showName.title()+'/'+season))
             #print(season)
-            serieData.remove(x)
+            #serieData.remove(x)
             continue
         #Þegar bara parent mappa inniheldur orðið season en enginn subfolder
         if len(x) > 1 and re.search(seasonReg, x[0]) is not None:
@@ -75,21 +76,24 @@ def search_by_season(seasonLis, destPath):
             elif season[-1].isdigit() and season[-2].isdigit(): season = 'Season ' + season[-2] + season[-1]
             showPath.add(('/'.join(x), destPath+'/'+showName.title()+'/'+season))
             #print(showName.title()+'/'+season)
-            serieData.remove(x)
+            #serieData.remove(x)
             continue
     #búa til dest dir og færa úr upphaflega dir í dest dir
-    #for x in showPath:
-    #    try:
-    #        os.makedirs(x[1])
-    #    except FileExistsError:
-    #        pass
-    #    try:
-    #        shutil.move('downloads/'+x[0],x[1])
-    #    except:
-    #        pass
-    #print(showPath)
+    for x in showPath:
+        try:
+            os.makedirs(x[1])
+        except FileExistsError:
+            pass
+        try:
+            shutil.move('downloads/'+x[0],x[1])
+        except:
+            pass
     #print(counter)
-    #print(len(seasonLis))
+    #for x in serieData:
+    #    print(x, '\n')
+    print(len(showPath))
+    print(len(serieData))
+
 
 
 #search_by_season(['downloads/Modern Family/Season 21', 'downloads/Breaking Bad/Season 1', 'downloads/Breaking Bad/Season 2', 'downloads/Big Bang Theory/Season.05', 'downloads/RuPaul Season 5'], 'destination')
