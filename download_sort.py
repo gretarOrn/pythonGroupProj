@@ -25,4 +25,4 @@ def download_sort(originPath, destPath):
     #print(showPath) 
     #print(season)
     #print(len(paths))
-download_sort('downloads', "downloads")
+download_sort('downloads', "destination")
