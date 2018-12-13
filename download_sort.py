@@ -1,8 +1,10 @@
 import pathlib
 import showFilter
+import os
 def download_sort(originPath, destPath):
     path = pathlib.Path(originPath)
-    filetypes = ['mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg' ]
+    paths = list()
+    filetypes = ['srt','mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg','mkv' ]
     paths = list()
     for x in filetypes:
         paths.extend(path.glob('**/*.'+x))
