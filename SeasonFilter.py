@@ -97,12 +97,14 @@ def search_by_season(seasonLis, destPath):
             shutil.move('downloads/'+x[0],x[1])
         except:
             pass
-        delPath = x[0].split('/')[0:-1]
-        print(delPath)
-        try:
-            os.rmdir('downloads'+'/'.join(delpath))
-        except:
-            pass
+        for i in range(1, len(x[0].split('/'))):
+            delPath = x[0].split('/')[0:-i]
+            #print(delPath)
+            try:
+                print('downloads/'+'/'.join(delPath))
+                os.rmdir('downloads/'+'/'.join(delPath))
+            except:
+                pass
     #sdata2 = []
     #for x in serieData:
     #    sdata2.append('/'.join(x))

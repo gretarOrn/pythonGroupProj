@@ -4,7 +4,15 @@ import os
 def download_sort(originPath, destPath):
     path = pathlib.Path(originPath)
     paths = list()
-    filetypes = ['stf','mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg','mkv' ]
+    filetypes = ['idx', 'sfv', 'srt','mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg','mkv' ]
+    delfiletypes = ['txt', 'rar', 'zip', 'nfo', 'jpg', 'jpeg', 'dat', 'stf', 'part', 'mta','png', 'r00']
+    for x in delfiletypes:
+        paths.extend(path.glob('**/*.'+x))
+    for x in paths:
+        try:
+            os.remove(x)
+        except:
+            pass
     paths = list()
     for x in filetypes:
         paths.extend(path.glob('**/*.'+x))
