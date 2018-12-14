@@ -12,7 +12,7 @@ def show_filter(paths, destPath):
     # reg fyrir staka þætti season
     Seasons = set(filter(seasonReg.search,paths))
     #paths = paths - Seasons
-    SeasonFilter.search_by_season(Seasons, destPath)
+    seasonLeftovers = SeasonFilter.search_by_season(Seasons, destPath)
     Episodes = set(filter(singleShowReg.search,paths))
     singleShowFilter.single_show_filter(Episodes,destPath)
     #paths = paths - Episodes

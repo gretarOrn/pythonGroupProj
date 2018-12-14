@@ -5,7 +5,7 @@ import shutil
 def search_by_season(seasonLis, destPath):
     serieData = []
     showPath = set()
-    #showPath2 = set()
+    leftover = []
     seasonReg = re.compile(r"[Ss]eason[s]*\s*.[0-9]{0,3}|SEASON[S]*\s*.[0-9]{0,3}|season[s]*\s*.[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\")
     for x in seasonLis:
         serieData.append(x.split('\\')[1:])
@@ -87,6 +87,7 @@ def search_by_season(seasonLis, destPath):
             elif len(season) > 2 and season[0].isdigit() and not season[1].isdigit(): season = 'Season 0'+ season[0]
             elif len(season) == 1 and season[0].isdigit(): season = 'Season 0'+season[0]
             showPath.add(('/'.join(x), destPath+'/'+showName.title()+'/'+season))
+        leftover.append(x)
     #búa til dest dir og færa úr upphaflega dir í dest dir
     for x in showPath:
         try:
@@ -106,21 +107,6 @@ def search_by_season(seasonLis, destPath):
                 os.rmdir('downloads/'+'/'.join(delPath))
             except:
                 pass
-    #sdata2 = []
-    #for x in serieData:
-    #    sdata2.append('/'.join(x))
-
-    #print(sdata2)
-    #print(counter)
-    #for x in serieData:
-    #    print(x, '\n')
-    #print(counter2)
-    #print(showPath - showPath2)
-    #print(len(showPath2))
-    #print(len(serieData))
-    #print(serieData)
-
-
-
-
-#search_by_season(['downloads/Modern Family/Season 21', 'downloads/Breaking Bad/Season 1', 'downloads/Breaking Bad/Season 2', 'downloads/Big Bang Theory/Season.05', 'downloads/RuPaul Season 5'], 'destination')
+    #print(leftover)
+    #print(len(leftover))
+    return leftover

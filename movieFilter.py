@@ -3,6 +3,7 @@ import re
 import os
 import shutil
 def movie_filter(paths, destPath):
+    leftovers = []
     #counter = 0
     #try:
     #    os.makedirs(destPath+'/Movies/')
