@@ -9,7 +9,10 @@ def movie_filter(paths, destPath):
         pass
     for x in paths:
         if "sample" in x.lower():
-            os.remove(x)
+            try:
+                os.remove(x)
+            except:
+                pass
         newPath = destPath+'/Movies/'+'/'.join(x.split('\\')[1:])
         try:
             shutil.move(x,newPath)

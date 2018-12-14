@@ -4,14 +4,19 @@ import os
 def download_sort(originPath, destPath):
     path = pathlib.Path(originPath)
     paths = list()
-    filetypes = ['srt','mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg','mkv' ]
-    paths = list()
+    filetypes = ['stf','mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg','mkv' ]
     for x in filetypes:
         paths.extend(path.glob('**/*.'+x))
+    print(len(paths))
     ## sort shows and return
     paths = set(map(lambda x: str(x), paths))
     movies = showFilter.show_filter(paths, destPath) 
-
+    paths = list()
+    for x in filetypes:
+        paths.extend(path.glob('**/*.'+x))
+    paths = set(map(lambda x: str(x), paths))
+    #print(len(paths))
+    #print('\n'.join(paths))
     #for i in paths:
     #    fileName = filename.append(str(i).split('\\')[-1])
     #info = list(re.search('^(.*)\.s([0-9]+)e[0-9]+', fileName).groups())
