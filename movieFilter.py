@@ -3,6 +3,7 @@ import re
 import os
 import shutil
 def movie_filter(paths, destPath):
+    #counter = 0
     try:
         os.makedirs(destPath+'/Movies/')
     except FileExistsError:
@@ -16,5 +17,7 @@ def movie_filter(paths, destPath):
         newPath = destPath+'/Movies/'+'/'.join(x.split('\\')[1:])
         try:
             shutil.move(x,newPath)
+            counter+=1
         except:
             pass
+    #print(counter)

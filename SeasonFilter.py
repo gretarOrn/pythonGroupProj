@@ -5,6 +5,7 @@ import shutil
 def search_by_season(seasonLis, destPath):
     serieData = []
     showPath = set()
+    #showPath2 = set()
     seasonReg = re.compile("[Ss]eason[s]*\s*.[0-9]{0,3}|SEASON[S]*\s*.[0-9]{0,3}|season[s]*\s*.[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\")
     for x in seasonLis:
         serieData.append(x.split('\\')[1:])
@@ -78,6 +79,14 @@ def search_by_season(seasonLis, destPath):
             #print(showName.title())
             #serieData.remove(x)
             continue
+        #fyrir edge cases þar sem sería heitir bara tölu eða byrjar á tölu
+        if re.search(seasonReg, x[0]) is None and re.match('[0-9]{1,2}', x[1]) is not None:
+            showName = x[0]
+            season = x[1]
+            if len(season) > 2 and season[0].isdigit() and season[1].isdigit(): season = 'Season '+ season[0]+season[1]
+            elif len(season) > 2 and season[0].isdigit() and not season[1].isdigit(): season = 'Season 0'+ season[0]
+            elif len(season) == 1 and season[0].isdigit(): season = 'Season 0'+season[0]
+            showPath.add(('/'.join(x), destPath+'/'+showName.title()+'/'+season))
     #búa til dest dir og færa úr upphaflega dir í dest dir
     for x in showPath:
         try:
@@ -86,15 +95,27 @@ def search_by_season(seasonLis, destPath):
             pass
         try:
             shutil.move('downloads/'+x[0],x[1])
-            counter2+=1
         except:
             pass
+        delPath = x[0].split('/')[0:-1]
+        print(delPath)
+        try:
+            os.rmdir('downloads'+'/'.join(delpath))
+        except:
+            pass
+    #sdata2 = []
+    #for x in serieData:
+    #    sdata2.append('/'.join(x))
+
+    #print(sdata2)
     #print(counter)
     #for x in serieData:
     #    print(x, '\n')
     #print(counter2)
-    #print(len(showPath))
+    #print(showPath - showPath2)
+    #print(len(showPath2))
     #print(len(serieData))
+    #print(serieData)
 
 
 
