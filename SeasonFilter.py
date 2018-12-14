@@ -6,7 +6,7 @@ def search_by_season(seasonLis, destPath):
     serieData = []
     showPath = set()
     #showPath2 = set()
-    seasonReg = re.compile("[Ss]eason[s]*\s*.[0-9]{0,3}|SEASON[S]*\s*.[0-9]{0,3}|season[s]*\s*.[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\")
+    seasonReg = re.compile(r"[Ss]eason[s]*\s*.[0-9]{0,3}|SEASON[S]*\s*.[0-9]{0,3}|season[s]*\s*.[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\")
     for x in seasonLis:
         serieData.append(x.split('\\')[1:])
     counter = 0
@@ -61,12 +61,12 @@ def search_by_season(seasonLis, destPath):
             counter +=1
             season = re.search(seasonReg, x[0]).group()
             showName = ''
-            reg2 = re.compile('[Ss]eason[s]*\s*.*[0-9]{0,3}|SEASON[S]*\s*.*[0-9]{0,3}|season[s]*\s*.*[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\')
+            reg2 = re.compile(r'[Ss]eason[s]*\s*.*[0-9]{0,3}|SEASON[S]*\s*.*[0-9]{0,3}|season[s]*\s*.*[0-9]{0,3}|[Ss]er[íi]a\s*[0-9]{0,3}|([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}|\\\\[Ss]*[0-9]{1,2}\\\\')
             if re.match(seasonReg, x[0]) is not None:
                 continue
             else: showName = re.sub(reg2, '', x[0])
             #edge case fyrir tala + sería(ísl)
-            if re.match('([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}', season): season = 'Season 0'+season[0]
+            if re.match(r'([0-9]{0,2}.\s*){0,1}ser[íi]a\s*[0-9]{0,3}', season): season = 'Season 0'+season[0]
             #taka út symbols í seríunafni og season og koma á format sem passar við existing möppur
             season = re.sub('\.', ' ', season)
             showName = re.sub(' - |\(|\)|\'', '', showName).lower()
