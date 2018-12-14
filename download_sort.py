@@ -5,7 +5,10 @@ def download_sort(originPath, destPath):
     path = pathlib.Path(originPath)
     paths = list()
     filetypes = ['idx', 'sfv', 'srt','mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg','mkv' ]
-    delfiletypes = ['txt', 'rar', 'zip', 'nfo', 'jpg', 'jpeg', 'dat', 'stf', 'part', 'mta','png', 'r00']
+    delfiletypes = ['txt', 'rar', 'zip', 'nfo', 'jpg', 'jpeg', 'dat', 'stf', 'part', 'mta','png']
+    for x in range(0,50):
+        if x < 10: delfiletypes.append('r0'+str(x))
+        delfiletypes.append('r'+str(x))
     for x in delfiletypes:
         paths.extend(path.glob('**/*.'+x))
     for x in paths:
