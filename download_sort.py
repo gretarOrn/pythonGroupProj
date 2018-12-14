@@ -44,11 +44,5 @@ def download_sort(originPath, destPath):
     #print(showPath) 
     #print(season)
     #print(len(paths))
-    path = pathlib.Path(originPath)
-    dirs = os.listdir(path)
-    for x in dirs:
-        try:
-            os.rmdir(originPath+'/'+x)
-        except:
-            pass
+    
 download_sort('downloads', "destination")
