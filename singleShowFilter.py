@@ -22,7 +22,7 @@ def mapping_func(fileName):
     elif re.search('^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]) != None:
         return (fileName,re.search('^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]).groups())
     else:
-        print("couldnt match: "+fileName.split('\\')[-1]+"\n")
+        #print("couldnt match: "+fileName.split('\\')[-1]+"\n")
         return None
 def single_show_filter(paths, destPath):
     #filenames = set(map(lambda x : x.split('\\')[-1], paths))

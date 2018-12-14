@@ -19,7 +19,7 @@ def download_sort(originPath, destPath):
     paths = list()
     for x in filetypes:
         paths.extend(path.glob('**/*.'+x))
-    print(len(paths))
+    #print(len(paths))
     ## sort shows and return
     paths = set(map(lambda x: str(x), paths))
     movies = showFilter.show_filter(paths, destPath) 
