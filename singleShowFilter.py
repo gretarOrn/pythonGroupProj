@@ -12,15 +12,15 @@ def deleter(path):
         shutil.rmtree(path)
     return
 def mapping_func(fileName):
-    if re.search('^[Ss]([0-9]+)[eE][0-9]+[\.\-\s]*(.*)', fileName.split('\\')[-1]) != None:
-        tempTuple = re.search('^[Ss]([0-9]+)[eE][0-9]+[\.\-\s]*(.*)', fileName.split('\\')[-1]).groups()
+    if re.search(r'^[Ss]([0-9]+)[eE][0-9]+[\.\-\s]*(.*)', fileName.split('\\')[-1]) != None:
+        tempTuple = re.search(r'^[Ss]([0-9]+)[eE][0-9]+[\.\-\s]*(.*)', fileName.split('\\')[-1]).groups()
         return (fileName, (tempTuple[1].split(' - ')[0], tempTuple[0]))
-    elif re.search('^(.*)[\.\-\s]*[Ss]([0-9]+)[\.\-\s]*[eE][\.\-\s]*[0-9]+', fileName.split('\\')[-1]) != None:
-        return (fileName, re.search('^(.*)[\.\-\s]*[Ss]([0-9]+)[\.\-\s]*[eE][\.\-\s]*[0-9]+', fileName.split('\\')[-1]).groups())
-    elif re.search('^(.*)[\s\[\-\_\.]+([0-9]{1,2})\s*[xX]\s*[0-9]+', fileName.split('\\')[-1]) != None:
-        return (fileName, re.search('^(.*)[\s\[\-\_\.]+([0-9]{1,2})\s*[xX]\s*[0-9]+', fileName.split('\\')[-1]).groups())
-    elif re.search('^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]) != None:
-        return (fileName,re.search('^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]).groups())
+    elif re.search(r'^(.*)[\.\-\s]*[Ss]([0-9]+)[\.\-\s]*[eE][\.\-\s]*[0-9]+', fileName.split('\\')[-1]) != None:
+        return (fileName, re.search(r'^(.*)[\.\-\s]*[Ss]([0-9]+)[\.\-\s]*[eE][\.\-\s]*[0-9]+', fileName.split('\\')[-1]).groups())
+    elif re.search(r'^(.*)[\s\[\-\_\.]+([0-9]{1,2})\s*[xX]\s*[0-9]+', fileName.split('\\')[-1]) != None:
+        return (fileName, re.search(r'^(.*)[\s\[\-\_\.]+([0-9]{1,2})\s*[xX]\s*[0-9]+', fileName.split('\\')[-1]).groups())
+    elif re.search(r'^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]) != None:
+        return (fileName,re.search(r'^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]).groups())
     else:
         #print("couldnt match: "+fileName.split('\\')[-1]+"\n")
         return None
@@ -52,7 +52,6 @@ def single_show_filter(paths, destPath):
         showName = str(re.sub(typeReg,'',showName)).strip()
         #print(showName)
         newPath = destPath+'/'+showName+'/'+season
-        parent = pathlib.Path('/'.join(newPath.split('\\')[0:-1]))
         #print(x)
         if os.path.exists(x[0]):
             try:
@@ -64,10 +63,12 @@ def single_show_filter(paths, destPath):
             shutil.move(x[0],newPath)
         except:
             pass
-        try:
-            pathlib.Path(parent).rmdir()
-        except:
-            pass
+        for i in range(1, len(x[0].split('/'))):
+            delPath = x[0].split('/')[0:-i]
+            try:
+                os.rmdir(delPath)
+            except:
+                pass
         #deleter(parent)
         #print('/'.join(x[0].split('\\')[0:-1]))
         #recursive_del(x[0])
