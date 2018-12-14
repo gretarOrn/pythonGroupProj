@@ -26,7 +26,7 @@ def show_filter(paths, destPath):
     paths.sort()
     #print('\n'.join(Seasons))
     #print('\n'.join(paths))
-    print(paths)
+    #print(paths)
     #for i in paths:
     #    if i.split('/')[-2] == season:
     #print("bla")
