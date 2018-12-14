@@ -10,19 +10,19 @@ def deleter(path):
         paths.extend(path.glob('**/*.'+x))
     if len(paths) == 0:
         shutil.rmtree(path)
-    
     return
 def mapping_func(fileName):
     if re.search('^[Ss]([0-9]+)[eE][0-9]+[\.\-\s]*(.*)', fileName.split('\\')[-1]) != None:
         tempTuple = re.search('^[Ss]([0-9]+)[eE][0-9]+[\.\-\s]*(.*)', fileName.split('\\')[-1]).groups()
         return (fileName, (tempTuple[1].split(' - ')[0], tempTuple[0]))
-    elif re.search('^(.*)[\.\-\s]*[Ss]([0-9]+)[eE][0-9]+', fileName.split('\\')[-1]) != None:
-        return (fileName, re.search('^(.*)[\.\-\s]*[Ss]([0-9]+)[eE][0-9]+', fileName.split('\\')[-1]).groups())
+    elif re.search('^(.*)[\.\-\s]*[Ss]([0-9]+)[\.\-\s]*[eE][\.\-\s]*[0-9]+', fileName.split('\\')[-1]) != None:
+        return (fileName, re.search('^(.*)[\.\-\s]*[Ss]([0-9]+)[\.\-\s]*[eE][\.\-\s]*[0-9]+', fileName.split('\\')[-1]).groups())
     elif re.search('^(.*)[\s\[\-\_\.]+([0-9]{1,2})\s*[xX]\s*[0-9]+', fileName.split('\\')[-1]) != None:
         return (fileName, re.search('^(.*)[\s\[\-\_\.]+([0-9]{1,2})\s*[xX]\s*[0-9]+', fileName.split('\\')[-1]).groups())
     elif re.search('^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]) != None:
         return (fileName,re.search('^(.*)[\.\-\s]*([0-9]{1,2})[0-9]{2}\.*', fileName.split('\\')[-1]).groups())
     else:
+        print("couldnt match: "+fileName.split('\\')[-1]+"\n")
         return None
 def single_show_filter(paths, destPath):
     #filenames = set(map(lambda x : x.split('\\')[-1], paths))
@@ -30,12 +30,15 @@ def single_show_filter(paths, destPath):
     typeReg = "Avi|Mp4|Flv|Wmv|Mov|Webm|Mpeg"
     filetypes = ['srt','mp4', 'avi', 'flv', 'wmv', 'mov', 'webm', 'mpeg','mkv' ]
     #filetypes = ['nfo', 'jpg', 'jpeg', 'png', 'txt', 'sfv', 'rar', 'zip']
-    info = set(map(mapping_func,paths))
+    info = list(map(mapping_func,paths))
     for x in info:
         if x == None:
             continue
         if "sample" in x[1][0].lower():
-            os.remove(x[0])
+            try:
+                os.remove(x[0])
+            except:
+                pass
             try:
                 os.removedirs('/'.join(newPath.split('\\')[0:-1]))
             except:
@@ -51,12 +54,18 @@ def single_show_filter(paths, destPath):
         newPath = destPath+'/'+showName+'/'+season
         parent = pathlib.Path('/'.join(newPath.split('\\')[0:-1]))
         #print(x)
-        try:
-           os.makedirs(newPath)
-        except FileExistsError:
-            pass
+        if os.path.exists(x[0]):
+            try:
+                os.makedirs(newPath)
+            except FileExistsError:
+                pass
+        
         try:
             shutil.move(x[0],newPath)
+        except:
+            pass
+        try:
+            pathlib.Path(parent).rmdir()
         except:
             pass
         #deleter(parent)
